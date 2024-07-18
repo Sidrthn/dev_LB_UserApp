@@ -1,0 +1,84 @@
+name: sixam_mart
+description: A Multi-vendor Food. Grocery, eCommerce, Pharmacy & Parcel service.
+publish_to: 'none' #
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  get:
+  shared_preferences:
+  connectivity:
+  firebase_core:
+  firebase_messaging:
+  flutter_local_notifications:
+  path_provider:
+  url_strategy:
+  pin_code_fields:
+  geolocator:
+  google_maps_flutter:
+  google_maps_flutter_web:
+  flutter_typeahead:
+  carousel_slider:
+  shimmer_animation:
+  image_picker:
+  image_picker_ios:
+  universal_html:
+  flutter_inappwebview:
+  flutter_widget_from_html:
+  fwfh_selectable_text:
+  flutter_html:
+  url_launcher:
+  http:
+  pointer_interceptor:
+  phone_numbers_parser:
+  country_code_picker:
+  cached_network_image:
+  photo_view:
+  image_compression_flutter:
+  dotted_border:
+  share_plus:
+  expandable_bottom_sheet:
+  google_sign_in:
+  google_sign_in_web:
+  flutter_facebook_auth:
+  flutter_animarker:
+  sign_in_with_apple:
+  intl:
+  just_the_tooltip:
+  flutter_slidable:
+#  meta_seo:
+  animated_flip_counter:
+
+
+dependency_overrides:
+  modal_bottom_sheet: ^3.0.0-pre
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/
+    - assets/language/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/font/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/font/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/font/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/font/Roboto-Black.ttf
+          weight: 900

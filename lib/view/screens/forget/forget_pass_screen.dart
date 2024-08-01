@@ -35,7 +35,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: widget.fromSocialLogin ? 'phone'.tr : 'forgot_password'.tr),
+      // appBar: CustomAppBar(title: widget.fromSocialLogin ? 'phone'.tr : 'forgot_password'.tr),
       endDrawer: const MenuDrawer(),endDrawerEnableOpenDragGesture: false,
       body: SafeArea(child: Center(child: Scrollbar(child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -49,12 +49,12 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
           ) : null,
           child: Column(children: [
 
-            Image.asset(Images.forgot, height: 220),
+            Image.asset(Images.lblogo, height: 220),
 
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: Text('please_enter_mobile'.tr, style: robotoRegular, textAlign: TextAlign.center),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(30),
+            //   child: Text('please_enter_mobile'.tr, style: robotoRegular, textAlign: TextAlign.center),
+            // ),
 
             CustomTextField(
               titleText: 'phone'.tr,
@@ -118,7 +118,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
         Get.find<AuthController>().forgetPassword(numberWithCountryCode).then((status) async {
           if (status.isSuccess) {
             Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+            // Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode, '', '', ''));
           }else {
+            print('This is the FORGOT PASSWORD status.message');
             showCustomSnackBar(status.message);
           }
         });

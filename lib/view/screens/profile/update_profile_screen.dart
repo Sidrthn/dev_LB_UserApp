@@ -120,6 +120,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     focusNode: _emailFocus,
                     inputAction: TextInputAction.done,
                     inputType: TextInputType.emailAddress,
+                    isEnabled: false,
                   ),
                   const SizedBox(height: Dimensions.paddingSizeLarge),
 

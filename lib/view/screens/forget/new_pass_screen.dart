@@ -1,18 +1,16 @@
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
-import 'package:sixam_mart/controller/user_controller.dart';
-import 'package:sixam_mart/data/model/response/userinfo_model.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_app_bar.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
-import 'package:sixam_mart/view/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/base/footer_view.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
+import 'dart:math';
 
 class NewPassScreen extends StatefulWidget {
   final String? resetToken;
@@ -25,17 +23,12 @@ class NewPassScreen extends StatefulWidget {
 }
 
 class _NewPassScreenState extends State<NewPassScreen> {
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  final FocusNode _newPasswordFocus = FocusNode();
-  final FocusNode _confirmPasswordFocus = FocusNode();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
-      appBar: CustomAppBar(title: widget.fromPasswordChange ? 'change_password'.tr : 'reset_password'.tr),
-      endDrawer: const MenuDrawer(),endDrawerEnableOpenDragGesture: false,
+      // appBar: CustomAppBar(title: widget.fromPasswordChange ? 'change_password'.tr : 'reset_password'.tr),
+      endDrawer: const MenuDrawer(), endDrawerEnableOpenDragGesture: false,
       body: SafeArea(child: Center(child: Scrollbar(child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: FooterView(child: Container(
@@ -47,53 +40,19 @@ class _NewPassScreenState extends State<NewPassScreen> {
             boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 700 : 300]!, blurRadius: 5, spreadRadius: 1)],
           ) : null,
           child: Column(children: [
-
             Image.asset(Images.forgetIcon, width: 100),
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
             Text(
-              'enter_new_password'.tr, textAlign: TextAlign.center,
+              'click_below_to_proceed'.tr, textAlign: TextAlign.center,
               style: robotoRegular.copyWith(color: Theme.of(context).hintColor, fontSize: Dimensions.fontSizeDefault),
             ),
             const SizedBox(height: 50),
-
-            Column(children: [
-
-              CustomTextField(
-                titleText: 'new_password'.tr,
-                controller: _newPasswordController,
-                focusNode: _newPasswordFocus,
-                nextFocus: _confirmPasswordFocus,
-                inputType: TextInputType.visiblePassword,
-                prefixImage: Images.lock,
-                isPassword: true,
-              ),
-              const SizedBox(height: Dimensions.paddingSizeLarge),
-
-              CustomTextField(
-                titleText: 'confirm_password'.tr,
-                controller: _confirmPasswordController,
-                focusNode: _confirmPasswordFocus,
-                inputAction: TextInputAction.done,
-                inputType: TextInputType.visiblePassword,
-                prefixImage: Images.lock,
-                isPassword: true,
-                onSubmit: (text) => GetPlatform.isWeb ? _resetPassword() : null,
-              ),
-
-            ]),
-            const SizedBox(height: 40),
-
-            GetBuilder<UserController>(builder: (userController) {
-              return GetBuilder<AuthController>(builder: (authBuilder) {
-                return CustomButton(
-                  buttonText: 'submit'.tr,
-                  isLoading: authBuilder.isLoading && userController.isLoading,
-                  onPressed: () => _resetPassword(),
-                );
-              });
+            GetBuilder<LocationController>(builder: (locationController) {
+              return CustomButton(
+                buttonText: 'Start Shopping'.tr,
+                onPressed: () => _resetPassword(),
+              );
             }),
-
           ]),
         )),
       )))),
@@ -101,36 +60,52 @@ class _NewPassScreenState extends State<NewPassScreen> {
   }
 
   void _resetPassword() {
-    String password = _newPasswordController.text.trim();
-    String confirmPassword = _confirmPasswordController.text.trim();
-    if (password.isEmpty) {
-      showCustomSnackBar('enter_password'.tr);
-    }else if (password.length < 6) {
-      showCustomSnackBar('password_should_be'.tr);
-    }else if(password != confirmPassword) {
-      showCustomSnackBar('confirm_password_does_not_matched'.tr);
-    }else {
-      if(widget.fromPasswordChange) {
-        UserInfoModel user = Get.find<UserController>().userInfoModel!;
-        user.password = password;
-        Get.find<UserController>().changePassword(user).then((response) {
-          if(response.isSuccess) {
-            showCustomSnackBar('password_updated_successfully'.tr, isError: false);
-          }else {
-            showCustomSnackBar(response.message);
-          }
+    String numberWithCountryCode = '+${widget.number!.trim()}';
+    String password = generateStrongPassword(12); // Replace with the actual password if you have one.
+    
+    Get.find<AuthController>().resetPassword(widget.resetToken, '+${widget.number!.trim()}', password, password).then((value) {
+      if (value.isSuccess) {
+        Get.find<AuthController>().login(numberWithCountryCode, password).then((value) async {
+          Get.find<LocationController>().navigateToLocationScreen('reset-password');
         });
-      }else {
-        Get.find<AuthController>().resetPassword(widget.resetToken, '+${widget.number!.trim()}', password, confirmPassword).then((value) {
-          if (value.isSuccess) {
-            Get.find<AuthController>().login('+${widget.number!.trim()}', password).then((value) async {
-              Get.find<LocationController>().navigateToLocationScreen('reset-password');
-            });
-          } else {
-            showCustomSnackBar(value.message);
-          }
-        });
+      } else {
+        showCustomSnackBar(value.message);
       }
+    });
+
+    // Get.find<AuthController>().login(numberWithCountryCode, password).then((value) {
+    //   if (value.isSuccess) {
+    //     // Get.find<LocationController>().navigateToLocationScreen('sign-in');
+    //     Get.find<LocationController>().navigateToLocationScreen('reset-password');
+    //   } else {
+    //     showCustomSnackBar(value.message);
+    //   }
+    // });
+  }
+
+  String generateStrongPassword(int length) {
+    const String lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const String upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const String numbers = '0123456789';
+    const String specialCharacters = '!@#%^&*()_+[]{}|;:,.<>?';
+    const String allCharacters = '$lowerCaseLetters$upperCaseLetters$numbers$specialCharacters';
+
+    Random random = Random.secure();
+    String password = '';
+
+    // Ensure the password includes at least one character from each set
+    password += lowerCaseLetters[random.nextInt(lowerCaseLetters.length)];
+    password += upperCaseLetters[random.nextInt(upperCaseLetters.length)];
+    password += numbers[random.nextInt(numbers.length)];
+    password += specialCharacters[random.nextInt(specialCharacters.length)];
+
+    // Fill the rest of the password length with random characters from all sets
+    for (int i = 4; i < length; i++) {
+      password += allCharacters[random.nextInt(allCharacters.length)];
     }
+
+    // Shuffle the characters to ensure randomness
+    List<String> passwordChars = password.split('')..shuffle(Random.secure());
+    return passwordChars.join('');
   }
 }

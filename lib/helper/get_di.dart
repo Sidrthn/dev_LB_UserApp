@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:sixam_mart/controller/auth_controller.dart';
@@ -25,6 +24,8 @@ import 'package:sixam_mart/controller/theme_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
 import 'package:sixam_mart/controller/wallet_controller.dart';
 import 'package:sixam_mart/controller/wishlist_controller.dart';
+import 'package:sixam_mart/controller/leaderboard_controller.dart';
+
 import 'package:sixam_mart/data/repository/auth_repo.dart';
 import 'package:sixam_mart/data/repository/banner_repo.dart';
 import 'package:sixam_mart/data/repository/campaign_repo.dart';
@@ -47,12 +48,15 @@ import 'package:sixam_mart/data/api/api_client.dart';
 import 'package:sixam_mart/data/repository/user_repo.dart';
 import 'package:sixam_mart/data/repository/wallet_repo.dart';
 import 'package:sixam_mart/data/repository/wishlist_repo.dart';
+import 'package:sixam_mart/data/repository/leaderboard_repo.dart';
+
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/data/model/response/language_model.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import '../data/repository/chat_repo.dart';
+
 
 Future<Map<String, Map<String, String>>> init() async {
   // Core
@@ -83,6 +87,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => ChatRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => RiderRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => CarSelectionRepo(apiClient: Get.find()));
+  Get.lazyPut(() => LeaderboardRepo(apiClient: Get.find()));
 
   // Controller
   Get.lazyPut(() => ThemeController(sharedPreferences: Get.find()));
@@ -109,6 +114,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => RiderController(riderRepo: Get.find()));
   Get.lazyPut(() => CarSelectionController(carSelectionRepo: Get.find()));
   Get.lazyPut(() => BookingCheckoutController(riderRepo: Get.find()));
+  Get.lazyPut(() => LeaderboardController(leaderboardRepo: Get.find()));
 
   // Retrieving localized data
   Map<String, Map<String, String>> languages = {};

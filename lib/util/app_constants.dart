@@ -5,7 +5,7 @@ import 'package:sixam_mart/util/images.dart';
 
 class AppConstants {
   static const String appName = 'Ladybugg';
-  static const double appVersion = 1.0;
+  static const double appVersion = 3.0;
 
   static const String fontFamily = 'Roboto';
   static const bool payInWevView = false;
@@ -127,6 +127,7 @@ class AppConstants {
   static const String mostTipsUri = '/api/v1/most-tips';
   static const String addFundUri = '/api/v1/customer/wallet/add-fund';
   static const String walletBonusUri = '/api/v1/customer/wallet/bonuses';
+  static const String getLeaderboardUri = '/api/v1/leaderboard';
 
   //MESSAGING
   static const String conversationListUri = '/api/v1/customer/message/list';

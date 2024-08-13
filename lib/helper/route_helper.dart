@@ -81,6 +81,8 @@ import 'package:sixam_mart/view/screens/update/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
+import 'package:sixam_mart/view/screens/leaderboard/leaderboard_screen.dart';
+
 
 class RouteHelper {
   static const String initial = '/';
@@ -147,6 +149,7 @@ class RouteHelper {
   static const String tripCompletedConfirmationScreen = '/trip-complete-confirmation-screen';
   static const String taxiCouponScreen = '/taxi-coupon-screen';
   static const String digitalPaymentScreen = '/digital-payment-screen';
+  static const String leaderboard = '/leaderboard';
 
 
   static String getInitialRoute({bool fromSplash = false}) => '$initial?from-splash=$fromSplash';
@@ -507,6 +510,7 @@ class RouteHelper {
     GetPage(name: tripCompletedConfirmationScreen, page: () => const TripCompletedConfirmationScreen()),
     GetPage(name: taxiCouponScreen, page: () => const TaxiCouponScreen()),
     GetPage(name: digitalPaymentScreen, page: () => const DigitalPaymentScreen()),
+    GetPage(name: leaderboard, page: () => const LeaderboardScreen()),
   ];
 
   static Widget getRoute(Widget navigateTo, {AccessLocationScreen? locationScreen, bool byPuss = false}) {

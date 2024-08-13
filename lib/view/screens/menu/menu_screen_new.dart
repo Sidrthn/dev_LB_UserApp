@@ -153,9 +153,17 @@ class _MenuScreenNewState extends State<MenuScreenNew> {
                         ) : const SizedBox(),
 
                         (Get.find<SplashController>().configModel!.customerWalletStatus == 1) ? PortionWidget(
-                            icon: Images.walletIcon, title: 'my_wallet'.tr, hideDivider: true, route: RouteHelper.getWalletRoute(true),
+                            icon: Images.walletIcon, title: 'my_wallet'.tr, hideDivider: false, route: RouteHelper.getWalletRoute(true),
                           suffix: !isLoggedIn ? null : PriceConverter.convertPrice(userController.userInfoModel != null ? userController.userInfoModel!.walletBalance : 0),
                         ) : const SizedBox(),
+                        // New Leaderboard Widget
+                        PortionWidget(
+                          icon: Images.leaderboardIcon, // Add the appropriate icon for leaderboard
+                          title: 'Leaderboard'.tr,
+                          route: RouteHelper.leaderboard,
+                          hideDivider: true,
+                          suffix: 'New', // Add the NEW tag with blinking effect
+                        ),
                       ]),
                     )
                   ]),

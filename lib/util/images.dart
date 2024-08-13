@@ -235,4 +235,5 @@ class Images {
   static const String sendIconWeb = 'assets/image/send_icon_web.png';
   static const String addressCity = 'assets/image/address_city.png';
   static const String lblogo = 'assets/image/lb_logo.png';
+  static const String leaderboardIcon = 'assets/image/leaderboard_icon.png';
 }

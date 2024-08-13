@@ -148,7 +148,7 @@ class SplashScreenState extends State<SplashScreen> {
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(Images.logo, width: 330),
+                    Image.asset(Images.lblogo, width: 330),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
                     // Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: 25)),
                   ],

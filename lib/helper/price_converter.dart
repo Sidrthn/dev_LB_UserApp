@@ -1,13 +1,13 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
-import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/features/splash/controllers/splash_controller.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/util/styles.dart';
 
 class PriceConverter {
-  static String convertPrice(double? price, {double? discount, String? discountType, bool forDM = false}) {
+  static String convertPrice(double? price, {double? discount, String? discountType, bool forDM = false, bool isFoodVariation = false}) {
     if(discount != null && discountType != null){
-      if(discountType == 'amount') {
+      if(discountType == 'amount' && !isFoodVariation) {
         price = price! - discount;
       }else if(discountType == 'percent') {
         price = price! - ((discount / 100) * price);
@@ -36,14 +36,14 @@ class PriceConverter {
         value: toFixed(price!),
         textStyle: textStyle ?? robotoMedium,
         fractionDigits: forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
-        prefix: isRightSide ? '' : Get.find<SplashController>().configModel!.currencySymbol!,
-        suffix: isRightSide ? Get.find<SplashController>().configModel!.currencySymbol! : '',
+        prefix: isRightSide ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} ',
+        suffix: isRightSide ? '${Get.find<SplashController>().configModel!.currencySymbol!} ' : '',
       ),
     );
   }
 
-  static double? convertWithDiscount(double? price, double? discount, String? discountType) {
-    if(discountType == 'amount') {
+  static double? convertWithDiscount(double? price, double? discount, String? discountType, {bool isFoodVariation = false}) {
+    if(discountType == 'amount' && !isFoodVariation) {
       price = price! - discount!;
     }else if(discountType == 'percent') {
       price = price! - ((discount! / 100) * price);

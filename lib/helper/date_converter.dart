@@ -1,4 +1,4 @@
-import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/features/splash/controllers/splash_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -199,5 +199,8 @@ class DateConverter {
     }
   }
 
+  static String convertRestaurantOpenTime(String time) {
+    return DateFormat('hh:mm a').format(DateFormat('HH:mm:ss').parse(time).toLocal());
+  }
 
 }

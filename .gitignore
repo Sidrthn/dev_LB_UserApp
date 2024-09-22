@@ -35,6 +35,8 @@ firebase.json
 .firebase
 changes.tar
 changes.zip
+get_changed_files.sh
+changed_files.zip
 
 # Web related
 

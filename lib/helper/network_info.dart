@@ -1,7 +1,7 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_compression_flutter/image_compression_flutter.dart';
-import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/features/splash/controllers/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +25,7 @@ class NetworkInfo {
           backgroundColor: isNotConnected ? Colors.red : Colors.green,
           duration: Duration(seconds: isNotConnected ? 6000 : 3),
           content: Text(
-            isNotConnected ? 'no_connection' : 'connected',
+            isNotConnected ? 'no_connection'.tr : 'connected'.tr,
             textAlign: TextAlign.center,
           ),
         ));

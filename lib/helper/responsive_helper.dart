@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ResponsiveHelper {
-
   static bool isMobilePhone() {
     if (!kIsWeb) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
@@ -25,10 +24,7 @@ class ResponsiveHelper {
   }
 
   static bool isTab(context) {
-    final size = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final size = MediaQuery.of(context).size.width;
     if (size < 1300 && size >= 650) {
       return true;
     } else {
@@ -37,10 +33,7 @@ class ResponsiveHelper {
   }
 
   static bool isDesktop(context) {
-    final size = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final size = MediaQuery.of(context).size.width;
     if (size >= 1300) {
       return true;
     } else {

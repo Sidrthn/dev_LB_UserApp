@@ -1,21 +1,18 @@
+import 'dart:math';
+import 'package:sixam_mart/features/location/controllers/location_controller.dart';
 import 'package:sixam_mart/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart/features/profile/domain/models/userinfo_model.dart';
 import 'package:sixam_mart/features/auth/controllers/auth_controller.dart';
-import 'package:sixam_mart/features/auth/screens/sign_in_screen.dart';
 import 'package:sixam_mart/features/verification/controllers/verification_controller.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
-import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/common/widgets/custom_app_bar.dart';
 import 'package:sixam_mart/common/widgets/custom_button.dart';
 import 'package:sixam_mart/common/widgets/custom_snackbar.dart';
-import 'package:sixam_mart/common/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/common/widgets/footer_view.dart';
 import 'package:sixam_mart/common/widgets/menu_drawer.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
-import 'package:sixam_mart/helper/route_helper.dart';
 
 class NewPassScreen extends StatefulWidget {
   final String? resetToken;
@@ -28,16 +25,11 @@ class NewPassScreen extends StatefulWidget {
 }
 
 class _NewPassScreenState extends State<NewPassScreen> {
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  final FocusNode _newPasswordFocus = FocusNode();
-  final FocusNode _confirmPasswordFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
-      appBar: CustomAppBar(title: widget.fromPasswordChange ? 'change_password'.tr : 'reset_password'.tr),
       endDrawer: const MenuDrawer(),endDrawerEnableOpenDragGesture: false,
       body: SafeArea(child: Center(child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -50,57 +42,19 @@ class _NewPassScreenState extends State<NewPassScreen> {
             boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 1)],
           ) : null,
           child: Column(children: [
-
             Image.asset(Images.forgetIcon, width: 100),
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
-            Text(
-              'enter_new_password'.tr, textAlign: TextAlign.center,
-              style: robotoRegular.copyWith(color: Theme.of(context).hintColor, fontSize: Dimensions.fontSizeDefault),
-            ),
-            const SizedBox(height: 50),
-
-            Column(children: [
-
-              CustomTextField(
-                labelText: 'new_password'.tr,
-                titleText: '8_character'.tr,
-                controller: _newPasswordController,
-                focusNode: _newPasswordFocus,
-                nextFocus: _confirmPasswordFocus,
-                inputType: TextInputType.visiblePassword,
-                prefixImage: Images.lock,
-                isPassword: true,
-              ),
-              const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
-              CustomTextField(
-                labelText: 'confirm_password'.tr,
-                titleText: '8_character'.tr,
-                controller: _confirmPasswordController,
-                focusNode: _confirmPasswordFocus,
-                inputAction: TextInputAction.done,
-                inputType: TextInputType.visiblePassword,
-                prefixImage: Images.lock,
-                isPassword: true,
-                onSubmit: (text) => GetPlatform.isWeb ? _resetPassword() : null,
-              ),
-
-            ]),
-            const SizedBox(height: 40),
-
-           GetBuilder<VerificationController>(builder: (verificationController) {
+            GetBuilder<VerificationController>(builder: (verificationController) {
               return GetBuilder<ProfileController>(builder: (profileController) {
                 return GetBuilder<AuthController>(builder: (authBuilder) {
                   return CustomButton(
-                    buttonText: 'submit'.tr,
+                    buttonText: 'Proceed',
                     isLoading: (authBuilder.isLoading || profileController.isLoading || verificationController.isLoading),
                     onPressed: () => _resetPassword(),
                   );
                 });
               });
             }),
-
           ]),
         )),
       ))),
@@ -108,8 +62,9 @@ class _NewPassScreenState extends State<NewPassScreen> {
   }
 
   void _resetPassword() {
-    String password = _newPasswordController.text.trim();
-    String confirmPassword = _confirmPasswordController.text.trim();
+    String numberWithCountryCode = '+${widget.number!.trim()}';
+    String password = generateStrongPassword(12); // Replace with the actual password if you have one.
+    String confirmPassword = password;
     if (password.isEmpty) {
       showCustomSnackBar('enter_password'.tr);
     }else if (password.length < 6) {
@@ -132,17 +87,41 @@ class _NewPassScreenState extends State<NewPassScreen> {
         Get.find<VerificationController>().resetPassword(widget.resetToken, '+${widget.number!.trim()}', password, confirmPassword).then((value) {
           if (value.isSuccess) {
             if(!ResponsiveHelper.isDesktop(context)) {
-              Get.offAllNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-            }else{
-              Get.offAllNamed(RouteHelper.getInitialRoute(fromSplash: false))?.then((value) {
-                Get.dialog(const SignInScreen(exitFromApp: true, backFromThis: true));
+              Get.find<AuthController>().login(numberWithCountryCode, password).then((loginValue) async {
+                if (loginValue.isSuccess) {
+                  Get.find<LocationController>().navigateToLocationScreen('sign-in', offNamed: true);
+                }
+              }).catchError((error) {
+                // After getting null exception but logged in
+                Get.find<LocationController>().navigateToLocationScreen('sign-in', offNamed: true);
               });
             }
-          } else {
-            showCustomSnackBar(value.message);
           }
         });
       }
     }
+  }
+
+
+  String generateStrongPassword(int length) {
+    const String lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const String upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const String numbers = '0123456789';
+    const String specialCharacters = '!@#%^&*()_+[]{}|;:,.<>?';
+    const String allCharacters = '$lowerCaseLetters$upperCaseLetters$numbers$specialCharacters';
+    Random random = Random.secure();
+    String password = '';
+    // Ensure the password includes at least one character from each set
+    password += lowerCaseLetters[random.nextInt(lowerCaseLetters.length)];
+    password += upperCaseLetters[random.nextInt(upperCaseLetters.length)];
+    password += numbers[random.nextInt(numbers.length)];
+    password += specialCharacters[random.nextInt(specialCharacters.length)];
+    // Fill the rest of the password length with random characters from all sets
+    for (int i = 4; i < length; i++) {
+      password += allCharacters[random.nextInt(allCharacters.length)];
+    }
+    // Shuffle the characters to ensure randomness
+    List<String> passwordChars = password.split('')..shuffle(Random.secure());
+    return passwordChars.join('');
   }
 }

@@ -5,12 +5,12 @@ import 'package:sixam_mart/util/images.dart';
 
 class AppConstants {
   static const String appName = 'Ladybugg';
-  static const double appVersion = 2.9; ///Flutter Version: 3.22.3
+  static const double appVersion = 7.0; ///Flutter Version: 3.22.3
 
   static const String fontFamily = 'Roboto';
   static const bool payInWevView = false;
   static const int balanceInputLen = 10;
-  static const String webHostedUrl = 'YOUR_WEB_HOSTED_URL';
+  static const String webHostedUrl = 'ladybugg.in';
   static const bool useReactWebsite = false;
 
   static const String baseUrl = 'https://dev.ladybugg.in';
@@ -247,9 +247,9 @@ class AppConstants {
 
   static List<LanguageModel> languages = [
     LanguageModel(imageUrl: Images.english, languageName: 'English', countryCode: 'US', languageCode: 'en'),
-    LanguageModel(imageUrl: Images.arabic, languageName: 'عربى', countryCode: 'SA', languageCode: 'ar'),
-    LanguageModel(imageUrl: Images.spanish, languageName: 'Spanish', countryCode: 'ES', languageCode: 'es'),
-    LanguageModel(imageUrl: Images.bengali, languageName: 'Bengali', countryCode: 'BN', languageCode: 'bn'),
+    // LanguageModel(imageUrl: Images.arabic, languageName: 'عربى', countryCode: 'SA', languageCode: 'ar'),
+    // LanguageModel(imageUrl: Images.spanish, languageName: 'Spanish', countryCode: 'ES', languageCode: 'es'),
+    // LanguageModel(imageUrl: Images.bengali, languageName: 'Bengali', countryCode: 'BN', languageCode: 'bn'),
   ];
 
   static List<String> joinDropdown = [

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:sixam_mart/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart/features/cart/controllers/cart_controller.dart';
@@ -90,13 +89,14 @@ class SplashScreenState extends State<SplashScreen> {
                 if (Get.find<SplashController>().showIntro()!) {
                   _newlyRegisteredRouteProcess();
                 } else {
-                  if(AuthHelper.isGuestLoggedIn()) {
-                    _forGuestUserRouteProcess();
-                  } else {
-                    await Get.find<AuthController>().guestLogin();
-                    _forGuestUserRouteProcess();
-                    // Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
-                  }
+                  Get.offNamed(RouteHelper.getSignUpRoute());
+                  // if(AuthHelper.isGuestLoggedIn()) {
+                  //   _forGuestUserRouteProcess();
+                  // } else {
+                  //   await Get.find<AuthController>().guestLogin();
+                  //   _forGuestUserRouteProcess();
+                  //   // Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
+                  // }
                 }
               }
             }
@@ -132,7 +132,8 @@ class SplashScreenState extends State<SplashScreen> {
     if(AppConstants.languages.length > 1) {
       Get.offNamed(RouteHelper.getLanguageRoute('splash'));
     }else {
-      Get.offNamed(RouteHelper.getOnBoardingRoute());
+      // Get.offNamed(RouteHelper.getOnBoardingRoute());
+      Get.offNamed(RouteHelper.getSignUpRoute());
     }
   }
 

@@ -12,7 +12,6 @@ import 'package:sixam_mart/helper/validate_check.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
-import 'package:sixam_mart/common/widgets/custom_app_bar.dart';
 import 'package:sixam_mart/common/widgets/custom_button.dart';
 import 'package:sixam_mart/common/widgets/custom_snackbar.dart';
 import 'package:sixam_mart/common/widgets/custom_text_field.dart';
@@ -20,6 +19,7 @@ import 'package:sixam_mart/common/widgets/footer_view.dart';
 import 'package:sixam_mart/common/widgets/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/features/location/controllers/location_controller.dart';
 
 class ForgetPassScreen extends StatefulWidget {
   final bool fromSocialLogin;
@@ -38,7 +38,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: widget.fromSocialLogin ? 'phone'.tr : 'forgot_password'.tr),
+      // appBar: CustomAppBar(title: widget.fromSocialLogin ? 'phone'.tr : 'forgot_password'.tr),
       endDrawer: const MenuDrawer(),endDrawerEnableOpenDragGesture: false,
       body: SafeArea(child: Center(child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -52,12 +52,12 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
           ) : null,
           child: Column(children: [
 
-            Image.asset(Images.forgot, height: 220),
+            Image.asset(Images.logo, height: 220),
 
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: Text('please_enter_mobile'.tr, style: robotoRegular, textAlign: TextAlign.center),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(30),
+            //   child: Text('please_enter_mobile'.tr, style: robotoRegular, textAlign: TextAlign.center),
+            // ),
 
             Form(
               key: _formKeyPhone,
@@ -123,6 +123,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
         showCustomSnackBar('enter_phone_number'.tr);
       }else if (!phoneValid.isValid) {
         showCustomSnackBar('invalid_phone_number'.tr);
+      }else if (phone == '9999999999') {
+        // Google testing phone number
+        Get.find<LocationController>().navigateToLocationScreen('sign-in', offNamed: true);
       }else {
         if(widget.fromSocialLogin) {
           widget.socialLogInBody!.phone = numberWithCountryCode;

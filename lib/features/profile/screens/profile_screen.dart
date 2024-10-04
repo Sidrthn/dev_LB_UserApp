@@ -177,11 +177,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                               SizedBox(width: Get.find<SplashController>().configModel!.loyaltyPointStatus == 1 ? Dimensions.paddingSizeSmall : 0),
 
-                              isLoggedIn ?  Expanded(child: ProfileCardWidget(
-                                image: Images.shoppingBagIcon,
-                                data: profileController.userInfoModel!.orderCount.toString(),
-                                title: 'total_order'.tr,
-                              )) : const SizedBox(),
+                              // isLoggedIn ?  Expanded(child: ProfileCardWidget(
+                              //   image: Images.shoppingBagIcon,
+                              //   data: profileController.userInfoModel!.orderCount.toString(),
+                              //   title: 'total_order'.tr,
+                              // )) : const SizedBox(),
 
                               SizedBox(width: Get.find<SplashController>().configModel!.customerWalletStatus == 1 ? Dimensions.paddingSizeSmall : 0),
 
@@ -211,10 +211,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             }) : const SizedBox(),
                             SizedBox(height: isLoggedIn ? Dimensions.paddingSizeSmall : 0),
 
-                            isLoggedIn ? profileController.userInfoModel!.socialId == null ? ProfileButtonWidget(icon: Icons.lock, title: 'change_password'.tr, onTap: () {
-                              Get.toNamed(RouteHelper.getResetPasswordRoute('', '', 'password-change'));
-                            }) : const SizedBox() : const SizedBox(),
-                            SizedBox(height: isLoggedIn ? profileController.userInfoModel!.socialId == null ? Dimensions.paddingSizeSmall : 0 : 0),
+                            // isLoggedIn ? profileController.userInfoModel!.socialId == null ? ProfileButtonWidget(icon: Icons.lock, title: 'change_password'.tr, onTap: () {
+                            //   Get.toNamed(RouteHelper.getResetPasswordRoute('', '', 'password-change'));
+                            // }) : const SizedBox() : const SizedBox(),
+                            // SizedBox(height: isLoggedIn ? profileController.userInfoModel!.socialId == null ? Dimensions.paddingSizeSmall : 0 : 0),
 
                             isLoggedIn ? ProfileButtonWidget(
                               icon: Icons.delete, title: 'delete_account'.tr,
